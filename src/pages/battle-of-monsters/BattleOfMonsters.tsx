@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
 import { MonsterBattleCard } from '../../components/monster-battle-card/MonsterBattleCard';
@@ -14,6 +14,7 @@ import {
   PageContainer,
   StartBattleButton,
 } from './BattleOfMonsters.styled';
+import { Monster } from '../../models/interfaces/monster.interface';
 
 const BattleOfMonsters = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,15 @@ const BattleOfMonsters = () => {
   const monsters = useSelector(selectMonsters);
 
   const selectedMonster = useSelector(selectSelectedMonster);
+
+  const randomComputerMonester: Monster | null = useMemo(() => {
+    if (!selectedMonster) return null;
+    const otherMonisters = monsters.filter(
+      (monister) => monister.id !== selectedMonster.id,
+    );
+    const randomIndex = Math.floor(Math.random() * otherMonisters.length);
+    return otherMonisters[randomIndex];
+  }, [selectedMonster, monsters]);
 
   useEffect(() => {
     dispatch(fetchMonstersData());
@@ -47,7 +57,10 @@ const BattleOfMonsters = () => {
           onClick={handleStartBattleClick}>
           Start Battle
         </StartBattleButton>
-        <MonsterBattleCard title={'Computer'} />
+        <MonsterBattleCard
+          monster={randomComputerMonester}
+          title={randomComputerMonester?.name ?? 'Computer'}
+        />
       </BattleSection>
     </PageContainer>
   );
