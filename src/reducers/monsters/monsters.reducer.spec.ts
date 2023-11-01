@@ -6,6 +6,7 @@ describe('Monsters Reducer', () => {
   it('should return the initial state', () => {
     expect(monstersReducer(undefined, { type: undefined })).toEqual({
       monsters: [],
+      result: null,
       selectedMonster: null,
     });
   });

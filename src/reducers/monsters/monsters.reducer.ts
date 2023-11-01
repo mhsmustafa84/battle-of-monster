@@ -37,12 +37,12 @@ export const monstersReducer = createReducer(initialState, (builder) => {
 
   builder.addCase(fetchBattleResult.pending, (state) => ({
     ...state,
-    result: {} as Result,
+    result: null,
   }));
 
   builder.addCase(fetchBattleResult.rejected, (state) => ({
     ...state,
-    result: {} as Result,
+    result: null,
   }));
 
   builder.addCase(fetchBattleResult.fulfilled, (state, action) => ({
